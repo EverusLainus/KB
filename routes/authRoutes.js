@@ -13,9 +13,11 @@ authRouter.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new userModel({ name, password: hashedPassword, role });
     await user.save();
+
     res.send({ message: " registration success" });
   } catch (err) {
     console.log(err.message);
+    res.send({ message: err.message });
     res.send({ message: "error: registration" });
   }
 });
@@ -45,6 +47,7 @@ authRouter.post("/login", async (req, res) => {
     res.status(200).json({ token });
   } catch (err) {
     console.log(err.message);
+    res.send({ message: err.message });
     return res.send({ message: "error: login" });
   }
 });
